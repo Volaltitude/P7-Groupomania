@@ -50,9 +50,33 @@ exports.modifyPost = async (req, res, next) => {
 		DB.query(
 			`UPDATE post SET body = "${req.body.body}", date = NOW() WHERE id = ${req.params.id}`
 		);
-		res.send("Post modifié");
+		res.send({ message: "Post modifié" });
 	} catch (err) {
 		res.status(401).send(err);
-        console.error(err)
+		console.error(err);
+	}
+};
+
+exports.deletePost = async (req, res, next) => {
+	try {
+		const roleResult = await DB.query(
+			`SELECT role FROM user WHERE id = ${req.body.id}`
+		);
+		const userRole = roleResult[0][0];
+		const idResult = await DB.query(
+			`SELECT user_id FROM post WHERE id = ${req.params.id}`
+		);
+		const userId = idResult[0][0];
+		if (
+			userRole.role !== "admin" &&
+			userRole.role !== "moderator" &&
+			userId.user_id !== req.body.id
+		)
+			throw new Error("Action non autorisée");
+		DB.query(`DELETE FROM post WHERE id = ${req.params.id}`);
+		res.send({ message: "Post suprimé" });
+	} catch (err) {
+		res.status(401).send(err);
+		console.error(err);
 	}
 };

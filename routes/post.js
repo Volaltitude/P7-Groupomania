@@ -6,7 +6,7 @@ const postCtrl = require("../controllers/post");
 
 router.post("/", postCtrl.createPost);
 
-//router.delete("/:id", auth, postCtrl.deletePost);
+router.delete("/:id", postCtrl.deletePost);
 
 router.put("/:id", postCtrl.modifyPost);
 
