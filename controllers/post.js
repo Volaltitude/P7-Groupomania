@@ -1,8 +1,9 @@
-const fs = require("fs");
-const db = require("../mysql");
-const DB = require("../mysql").promise();
+import fs from "fs";
+import { db } from "../mysql.js";
 
-exports.getAllPosts = (req, res, next) => {
+const DB = db.promise();
+
+const getAllPosts = (req, res, next) => {
 	let sql = `SELECT * FROM post`;
 	db.query(sql, (err, result) => {
 		console.log(result);
@@ -13,7 +14,7 @@ exports.getAllPosts = (req, res, next) => {
 	});
 };
 
-exports.getOnePost = (req, res, next) => {
+const getOnePost = (req, res, next) => {
 	let sql = `SELECT * FROM post WHERE id = ${req.params.id}`;
 	db.query(sql, (err, result) => {
 		if (err) throw err;
@@ -23,7 +24,7 @@ exports.getOnePost = (req, res, next) => {
 	});
 };
 
-exports.createPost = (req, res, next) => {
+const createPost = (req, res, next) => {
 	let sql = `INSERT INTO post (body, date, user_id) VALUES ("${req.body.body}", NOW(), ${req.body.user_id})`;
 	db.query(sql, (err, result) => {
 		if (err) throw err;
@@ -31,7 +32,7 @@ exports.createPost = (req, res, next) => {
 	});
 };
 
-exports.modifyPost = async (req, res, next) => {
+const modifyPost = async (req, res, next) => {
 	try {
 		const roleResult = await DB.query(
 			`SELECT role FROM user WHERE id = ${req.body.id}`
@@ -57,7 +58,7 @@ exports.modifyPost = async (req, res, next) => {
 	}
 };
 
-exports.deletePost = async (req, res, next) => {
+const deletePost = async (req, res, next) => {
 	try {
 		const roleResult = await DB.query(
 			`SELECT role FROM user WHERE id = ${req.body.id}`
@@ -80,3 +81,5 @@ exports.deletePost = async (req, res, next) => {
 		console.error(err);
 	}
 };
+
+export { getAllPosts, getOnePost, createPost, modifyPost, deletePost };

@@ -9,6 +9,7 @@
   },
   "author": "Guillaume Caretto",
   "license": "ISC",
+  "type": "module",
   "dependencies": {
     "bcrypt": "^5.0.1",
     "dotenv": "^16.0.0",

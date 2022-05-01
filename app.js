@@ -1,10 +1,15 @@
-const express = require("express");
+import express from "express";
+import { router as userRoutes } from "./routes/user.js";
+import { router as postRoutes } from "./routes/post.js";
+import helmet from "helmet";
+import "dotenv/config";
+import { fileURLToPath } from "url"
+import path from "path"
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
 const app = express();
-const userRoutes = require("./routes/user");
-const postRoutes = require("./routes/post");
-const helmet = require("helmet");
-const path = require("path");
-require("dotenv").config();
 
 app.use(express.json());
 app.use(
@@ -33,5 +38,4 @@ app.use("/images", express.static(path.join(__dirname, "images")));
 app.use("/api/auth", userRoutes);
 app.use("/api/post", postRoutes);
 
-
-module.exports = app;
+export { app };

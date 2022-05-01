@@ -1,9 +1,9 @@
-const bcrypt = require("bcrypt");
-require("dotenv").config();
-const jwt = require("jsonwebtoken");
-const db = require("../mysql");
+import bcrypt from "bcrypt";
+import "dotenv/config";
+import jwt from "jsonwebtoken";
+import { db } from "../mysql.js";
 
-exports.signup = (req, res, next) => {
+export const signup = (req, res, next) => {
 	bcrypt
 		.hash(req.body.password, 10)
 		.then((hash) => {
@@ -17,7 +17,7 @@ exports.signup = (req, res, next) => {
 		.catch((err) => res.status(500).json({ err }));
 };
 
-exports.login = (req, res, next) => {
+export const login = (req, res, next) => {
 	const sql = `SELECT password from user where email = "${req.body.email}"`;
 	db.query(sql, (err, result) => {
 		console.log(result);
