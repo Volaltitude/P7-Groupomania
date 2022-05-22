@@ -60,6 +60,7 @@ const modifyPost = async (req, res, next) => {
 
 const deletePost = async (req, res, next) => {
 	try {
+    console.log(req.body)
 		const roleResult = await DB.query(
 			`SELECT role FROM user WHERE id = ${req.body.id}`
 		);
